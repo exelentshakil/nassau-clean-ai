@@ -1,0 +1,69 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-panel: var(--panel);
+  --color-panel-hover: var(--panel-hover);
+  --color-panel-subtle: var(--panel-subtle);
+  --color-border: var(--border);
+  --color-border-subtle: var(--border-subtle);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-stripe-purple: var(--stripe-purple);
+  --color-stripe-purple-hover: var(--stripe-purple-hover);
+  --color-stripe-slate: var(--stripe-slate);
+  --color-brand-cyan: var(--brand-cyan);
+  --color-brand-emerald: var(--brand-emerald);
+}
+
+@layer base {
+  :root {
+    --bg: #f8fafc;
+    --panel: #ffffff;
+    --panel-hover: #f1f5f9;
+    --panel-subtle: #f8fafc;
+    --border: #e2e8f0;
+    --border-subtle: #edf2f7;
+    --text-primary: #0a2540;
+    --text-secondary: #334155;
+    --text-muted: #64748b;
+    --stripe-purple: #635bff;
+    --stripe-purple-hover: #4f46e5;
+    --stripe-slate: #0a2540;
+    --brand-cyan: #0ea5e9;
+    --brand-emerald: #10b981;
+  }
+
+  .dark {
+    --bg: #090d16;
+    --panel: #0f172a;
+    --panel-hover: #1e293b;
+    --panel-subtle: #141e33;
+    --border: #1e293b;
+    --border-subtle: #182236;
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+    --stripe-purple: #7c75ff;
+    --stripe-purple-hover: #635bff;
+    --stripe-slate: #f8fafc;
+    --brand-cyan: #38bdf8;
+    --brand-emerald: #34d399;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg);
+    color: var(--text-primary);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+}
