@@ -15,20 +15,10 @@ import {
   PricingRulesConfig,
 } from "@/lib/types";
 import { DEFAULT_PRICING_RULES, SAMPLE_INITIAL_BOOKINGS } from "@/lib/constants";
-import {
-  Calendar,
-  MessageSquare,
-  Sliders,
-  Smartphone,
-  ShieldCheck,
-  Sparkles,
-  MapPin,
-  Clock,
-  DollarSign
-} from "lucide-react";
+import { MapPin } from "lucide-react";
 
 export default function HomePage() {
-  const [activeTab, setActiveTab] = useState<"wizard" | "chat" | "admin" | "sms">("wizard");
+  const [activeTab, setActiveTab] = useState<"booking" | "assistant" | "admin" | "sms">("booking");
   const [pricingRules, setPricingRules] = useState<PricingRulesConfig>(DEFAULT_PRICING_RULES);
   const [bookings, setBookings] = useState<BookingRecord[]>(SAMPLE_INITIAL_BOOKINGS);
   const [selectedBookingForSms, setSelectedBookingForSms] = useState<string | undefined>(undefined);
@@ -55,7 +45,7 @@ export default function HomePage() {
     frequency: CleaningFrequency;
   }) => {
     setPrefillConfig(config);
-    setActiveTab("wizard");
+    setActiveTab("booking");
   };
 
   // Callback when customer confirms booking in wizard
@@ -74,7 +64,7 @@ export default function HomePage() {
     setPricingRules(DEFAULT_PRICING_RULES);
     setBookings(SAMPLE_INITIAL_BOOKINGS);
     setPrefillConfig(null);
-    setActiveTab("wizard");
+    setActiveTab("booking");
   };
 
   return (
@@ -139,7 +129,7 @@ export default function HomePage() {
 
       {/* Main Content Body */}
       <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-8">
-        {activeTab === "wizard" && (
+        {activeTab === "booking" && (
           <BookingWizard
             pricingRules={pricingRules}
             onBookingConfirmed={handleBookingConfirmed}
@@ -147,7 +137,7 @@ export default function HomePage() {
           />
         )}
 
-        {activeTab === "chat" && (
+        {activeTab === "assistant" && (
           <AiAssistant onApplyPrefill={handleApplyAiPrefill} />
         )}
 
