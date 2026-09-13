@@ -150,7 +150,7 @@ export function AdminDashboard({
                   <div className="flex justify-between items-center mb-1">
                     <label className="font-medium text-[var(--color-text-secondary)]">Base Service Fee</label>
                     <span className="font-mono font-bold text-[var(--color-stripe-purple)]">
-                      ${draftRules.baseServiceRate}
+                      ${draftRules.baseRate}
                     </span>
                   </div>
                   <input
@@ -158,9 +158,9 @@ export function AdminDashboard({
                     min={60}
                     max={150}
                     step={5}
-                    value={draftRules.baseServiceRate}
+                    value={draftRules.baseRate}
                     onChange={(e) =>
-                      setDraftRules({ ...draftRules, baseServiceRate: Number(e.target.value) })
+                      setDraftRules({ ...draftRules, baseRate: Number(e.target.value) })
                     }
                     className="w-full accent-[var(--color-stripe-purple)]"
                   />
