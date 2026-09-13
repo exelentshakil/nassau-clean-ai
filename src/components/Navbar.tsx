@@ -17,49 +17,54 @@ import {
 
 interface NavbarProps {
   activeTab: "booking" | "assistant" | "admin" | "sms";
-  setActiveTab: (tab: "booking" | "assistant" | "admin" | "sms") => void;
+  setActiveTab?: (tab: "booking" | "assistant" | "admin" | "sms") => void;
+  onTabChange?: (tab: "booking" | "assistant" | "admin" | "sms") => void;
   onResetDemo: () => void;
-  bookingCount: number;
+  bookingCount?: number;
 }
 
 export function Navbar({
   activeTab,
   setActiveTab,
+  onTabChange,
   onResetDemo,
-  bookingCount,
+  bookingCount = 0,
 }: NavbarProps) {
   const { theme, setTheme } = useTheme();
+
+  const handleTabChange = (tab: "booking" | "assistant" | "admin" | "sms") => {
+    if (setActiveTab) setActiveTab(tab);
+    if (onTabChange) onTabChange(tab);
+  };
 
   return (
     <header className="sticky top-0 z-40 border-b border-[var(--color-border)] bg-[var(--color-panel)]/90 backdrop-blur-md">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
-          {/* Logo & Brand */}
+          {/* Logo & Tagline */}
           <div className="flex items-center space-x-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-[var(--color-stripe-purple)] to-[#00d4b2] text-white shadow-xs">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--color-stripe-purple)] text-white shadow-sm">
               <Sparkles className="h-5 w-5" />
             </div>
             <div>
               <div className="flex items-center space-x-2">
                 <span className="text-base font-bold tracking-tight text-[var(--color-text-primary)]">
-                  NassauClean<span className="text-[var(--color-stripe-purple)]">.AI</span>
+                  NassauClean.AI
                 </span>
-                <span className="hidden sm:inline-flex items-center rounded-full bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-                  <span className="mr-1 h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  Live Dispatch
+                <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                  Massapequa, NY
                 </span>
               </div>
-              <p className="text-[11px] text-[var(--color-text-muted)] flex items-center space-x-1">
-                <MapPin className="h-3 w-3 text-sky-500" />
-                <span>Massapequa & Nassau County, NY</span>
+              <p className="text-[11px] text-[var(--color-text-muted)] font-medium">
+                Deterministic Residential Cleaning & AI Dispatch System
               </p>
             </div>
           </div>
 
-          {/* Navigation Tabs */}
+          {/* Center Navigation Tabs */}
           <nav className="hidden md:flex items-center space-x-1 rounded-xl bg-[var(--color-panel-subtle)] p-1 border border-[var(--color-border)]">
             <button
-              onClick={() => setActiveTab("booking")}
+              onClick={() => handleTabChange("booking")}
               className={`flex items-center space-x-2 rounded-lg px-3.5 py-1.5 text-xs font-semibold transition-all ${
                 activeTab === "booking"
                   ? "bg-[var(--color-panel)] text-[var(--color-stripe-purple)] shadow-xs border border-[var(--color-border)]"
@@ -71,7 +76,7 @@ export function Navbar({
             </button>
 
             <button
-              onClick={() => setActiveTab("assistant")}
+              onClick={() => handleTabChange("assistant")}
               className={`flex items-center space-x-2 rounded-lg px-3.5 py-1.5 text-xs font-semibold transition-all ${
                 activeTab === "assistant"
                   ? "bg-[var(--color-panel)] text-[var(--color-stripe-purple)] shadow-xs border border-[var(--color-border)]"
@@ -86,7 +91,7 @@ export function Navbar({
             </button>
 
             <button
-              onClick={() => setActiveTab("admin")}
+              onClick={() => handleTabChange("admin")}
               className={`flex items-center space-x-2 rounded-lg px-3.5 py-1.5 text-xs font-semibold transition-all ${
                 activeTab === "admin"
                   ? "bg-[var(--color-panel)] text-[var(--color-stripe-purple)] shadow-xs border border-[var(--color-border)]"
@@ -101,7 +106,7 @@ export function Navbar({
             </button>
 
             <button
-              onClick={() => setActiveTab("sms")}
+              onClick={() => handleTabChange("sms")}
               className={`flex items-center space-x-2 rounded-lg px-3.5 py-1.5 text-xs font-semibold transition-all ${
                 activeTab === "sms"
                   ? "bg-[var(--color-panel)] text-[var(--color-stripe-purple)] shadow-xs border border-[var(--color-border)]"
@@ -118,7 +123,7 @@ export function Navbar({
             <button
               onClick={onResetDemo}
               title="Reset to initial demo state"
-              className="inline-flex items-center space-x-1.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-panel)] px-2.5 py-1.5 text-xs font-medium text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-panel-hover)] transition-colors"
+              className="inline-flex items-center space-x-1 rounded-lg border border-[var(--color-border)] bg-[var(--color-panel-subtle)] px-2.5 py-1.5 text-xs font-medium text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] hover:border-slate-300 dark:hover:border-slate-700 transition-colors"
             >
               <RotateCcw className="h-3.5 w-3.5" />
               <span className="hidden sm:inline">Reset</span>
@@ -126,8 +131,8 @@ export function Navbar({
 
             <button
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="rounded-lg border border-[var(--color-border)] bg-[var(--color-panel)] p-2 text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-panel-hover)] transition-colors"
-              aria-label="Toggle theme"
+              title="Toggle theme"
+              className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-[var(--color-border)] bg-[var(--color-panel-subtle)] text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors"
             >
               {theme === "dark" ? (
                 <Sun className="h-4 w-4 text-amber-400" />
@@ -138,28 +143,28 @@ export function Navbar({
           </div>
         </div>
 
-        {/* Mobile Nav Bar */}
-        <div className="flex md:hidden overflow-x-auto py-2 border-t border-[var(--color-border)] space-x-1 text-xs">
+        {/* Mobile Tab Bar */}
+        <div className="flex md:hidden items-center justify-between space-x-1 border-t border-[var(--color-border)] py-2 text-xs overflow-x-auto">
           <button
-            onClick={() => setActiveTab("booking")}
+            onClick={() => handleTabChange("booking")}
             className={`px-3 py-1 rounded-md shrink-0 ${activeTab === "booking" ? "bg-[var(--color-stripe-purple)] text-white font-bold" : "text-[var(--color-text-muted)]"}`}
           >
-            Booking
+            Wizard
           </button>
           <button
-            onClick={() => setActiveTab("assistant")}
+            onClick={() => handleTabChange("assistant")}
             className={`px-3 py-1 rounded-md shrink-0 ${activeTab === "assistant" ? "bg-[var(--color-stripe-purple)] text-white font-bold" : "text-[var(--color-text-muted)]"}`}
           >
-            AI Assistant
+            AI Chat
           </button>
           <button
-            onClick={() => setActiveTab("admin")}
+            onClick={() => handleTabChange("admin")}
             className={`px-3 py-1 rounded-md shrink-0 ${activeTab === "admin" ? "bg-[var(--color-stripe-purple)] text-white font-bold" : "text-[var(--color-text-muted)]"}`}
           >
-            Admin ({bookingCount})
+            Rules & Dispatch
           </button>
           <button
-            onClick={() => setActiveTab("sms")}
+            onClick={() => handleTabChange("sms")}
             className={`px-3 py-1 rounded-md shrink-0 ${activeTab === "sms" ? "bg-[var(--color-stripe-purple)] text-white font-bold" : "text-[var(--color-text-muted)]"}`}
           >
             Twilio SMS

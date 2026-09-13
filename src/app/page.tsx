@@ -72,8 +72,9 @@ export default function HomePage() {
       {/* Global Navbar */}
       <Navbar
         activeTab={activeTab}
-        onTabChange={setActiveTab}
+        setActiveTab={setActiveTab}
         onResetDemo={handleResetDemo}
+        bookingCount={bookings.length}
       />
 
       {/* Hero Header */}
