@@ -134,6 +134,7 @@ export interface GroundedChatMessage {
   sender: "user" | "assistant";
   timestamp: string;
   text: string;
+  groundedSources?: string[];
   suggestedAction?: {
     type: "APPLY_CONFIG_TO_WIZARD";
     bedrooms: number;

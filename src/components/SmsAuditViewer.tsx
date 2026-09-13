@@ -92,22 +92,22 @@ export function SmsAuditViewer({ bookings, selectedBookingId }: SmsAuditViewerPr
                   <div key={sms.id} className="space-y-1">
                     <div
                       className={`p-3 rounded-2xl text-[11px] leading-relaxed ${
-                        sms.recipientType === "customer"
+                        sms.recipient === "CUSTOMER"
                           ? "bg-[#635bff] text-white rounded-br-none"
                           : "bg-slate-800 text-slate-200 rounded-bl-none"
                       }`}
                     >
                       <div className="flex justify-between items-center text-[9px] opacity-75 mb-1 pb-1 border-b border-white/20">
                         <span>
-                          {sms.recipientType === "customer" ? "To Customer" : "To Crew Lead"}
+                          {sms.recipient === "CUSTOMER" ? "To Customer" : "To Crew Lead"}
                         </span>
-                        <span>{sms.scheduledFor.slice(11, 16)} EST</span>
+                        <span>{sms.sentTimestamp ? sms.sentTimestamp.slice(11, 16) : "08:30"} EST</span>
                       </div>
                       <p className="font-mono text-[10px] leading-tight">{sms.messageText}</p>
                     </div>
 
                     <div className="flex items-center justify-end space-x-1 text-[9px] text-slate-400 px-1">
-                      <span>Delivered</span>
+                      <span>{sms.deliveryStatus}</span>
                       <CheckCheck className="h-3 w-3 text-sky-400" />
                     </div>
                   </div>
@@ -126,7 +126,7 @@ export function SmsAuditViewer({ bookings, selectedBookingId }: SmsAuditViewerPr
             </h3>
 
             <div className="space-y-3">
-              {currentBooking.smsAlertsSent.map((sms, index) => (
+              {currentBooking.smsAlertsSent.map((sms) => (
                 <div
                   key={sms.id}
                   className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-panel)] p-4 shadow-xs space-y-3"
@@ -134,7 +134,7 @@ export function SmsAuditViewer({ bookings, selectedBookingId }: SmsAuditViewerPr
                   <div className="flex justify-between items-center">
                     <div className="flex items-center space-x-2">
                       <span className="h-7 w-7 rounded-lg bg-[var(--color-panel-subtle)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-stripe-purple)]">
-                        {sms.recipientType === "customer" ? (
+                        {sms.recipient === "CUSTOMER" ? (
                           <User className="h-4 w-4" />
                         ) : (
                           <Users className="h-4 w-4" />
@@ -142,18 +142,18 @@ export function SmsAuditViewer({ bookings, selectedBookingId }: SmsAuditViewerPr
                       </span>
                       <div>
                         <span className="text-xs font-bold text-[var(--color-text-primary)] block">
-                          {sms.recipientType === "customer"
-                            ? `Customer Notification (${sms.recipientPhone})`
-                            : `Crew Dispatch Work Order (${sms.recipientPhone})`}
+                          {sms.recipient === "CUSTOMER"
+                            ? `Customer Notification (${sms.phone})`
+                            : `Crew Dispatch Work Order (${sms.phone})`}
                         </span>
                         <span className="text-[10px] text-[var(--color-text-muted)] font-mono">
-                          Trigger: {sms.id.startsWith("sms-conf") ? "Instant Webhook on Stripe Payment" : "Crew Dispatch Queue"}
+                          Type: {sms.type}
                         </span>
                       </div>
                     </div>
 
                     <span className="rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400 uppercase font-mono">
-                      {sms.status}
+                      {sms.deliveryStatus}
                     </span>
                   </div>
 
@@ -163,7 +163,7 @@ export function SmsAuditViewer({ bookings, selectedBookingId }: SmsAuditViewerPr
 
                   <div className="flex justify-between items-center text-[10px] text-[var(--color-text-muted)] pt-1 border-t border-[var(--color-border)]">
                     <span>Twilio SID: SM{Math.random().toString(36).substring(2, 12)}</span>
-                    <span className="font-mono">Scheduled: {sms.scheduledFor}</span>
+                    <span className="font-mono">Timestamp: {sms.sentTimestamp}</span>
                   </div>
                 </div>
               ))}

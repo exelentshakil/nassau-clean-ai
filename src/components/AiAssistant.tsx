@@ -10,9 +10,6 @@ import {
   ShieldCheck,
   ArrowRight,
   HelpCircle,
-  Clock,
-  DollarSign,
-  AlertCircle,
   RotateCcw
 } from "lucide-react";
 
@@ -31,8 +28,8 @@ interface AiAssistantProps {
 const INITIAL_MESSAGES: GroundedChatMessage[] = [
   {
     id: "welcome-1",
-    role: "assistant",
-    content:
+    sender: "assistant",
+    text:
       "Hello! I am Nassau Clean's AI concierge, directly grounded in our official company costbook, policies, and crew schedules across Nassau County.\n\nI can calculate guaranteed pricing, compare cleaning packages, or answer any policy questions (cancellation, pet hair, condition modifiers, or arrival windows). What can I help quote for you today?",
     timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
     groundedSources: ["Nassau Clean Master Costbook 2026", "Cancellation & Deposit Terms", "Service Territory Map"],
@@ -67,8 +64,8 @@ export function AiAssistant({ onApplyPrefill }: AiAssistantProps) {
 
     const userMessage: GroundedChatMessage = {
       id: `usr-${Date.now()}`,
-      role: "user",
-      content: textToSend,
+      sender: "user",
+      text: textToSend,
       timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
     };
 
@@ -87,8 +84,8 @@ export function AiAssistant({ onApplyPrefill }: AiAssistantProps) {
 
       const aiMessage: GroundedChatMessage = {
         id: `ai-${Date.now()}`,
-        role: "assistant",
-        content: data.reply,
+        sender: "assistant",
+        text: data.reply,
         timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
         groundedSources: data.groundedSources || ["Official Pricing Schedule", "Company Operating Policies"],
         suggestedAction: data.suggestedAction,
@@ -98,8 +95,8 @@ export function AiAssistant({ onApplyPrefill }: AiAssistantProps) {
     } catch (err) {
       const errorMessage: GroundedChatMessage = {
         id: `err-${Date.now()}`,
-        role: "assistant",
-        content:
+        sender: "assistant",
+        text:
           "Standard pricing for a 3-bedroom, 2-bathroom home in Massapequa starts at $180 for standard recurring service, or $261 for a deep clean scrub. Our 25% deposit policy holds your slot, with free rescheduling up to 24 hours prior.",
         timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
         groundedSources: ["Deterministic Fallback Engine", "Local Policy Database"],
@@ -155,30 +152,30 @@ export function AiAssistant({ onApplyPrefill }: AiAssistantProps) {
             <div
               key={msg.id}
               className={`flex items-start space-x-3 ${
-                msg.role === "user" ? "flex-row-reverse space-x-reverse" : "flex-row"
+                msg.sender === "user" ? "flex-row-reverse space-x-reverse" : "flex-row"
               }`}
             >
               {/* Avatar */}
               <div
                 className={`h-8 w-8 rounded-xl flex items-center justify-center shrink-0 ${
-                  msg.role === "user"
+                  msg.sender === "user"
                     ? "bg-[var(--color-stripe-purple)] text-white"
                     : "bg-[var(--color-panel-subtle)] text-[var(--color-stripe-purple)] border border-[var(--color-border)]"
                 }`}
               >
-                {msg.role === "user" ? <User className="h-4 w-4" /> : <Bot className="h-4 w-4" />}
+                {msg.sender === "user" ? <User className="h-4 w-4" /> : <Bot className="h-4 w-4" />}
               </div>
 
               {/* Bubble */}
               <div className="max-w-[80%] space-y-2">
                 <div
                   className={`rounded-2xl p-4 text-xs leading-relaxed whitespace-pre-wrap shadow-xs ${
-                    msg.role === "user"
+                    msg.sender === "user"
                       ? "bg-[var(--color-stripe-purple)] text-white"
                       : "bg-[var(--color-panel-subtle)] border border-[var(--color-border)] text-[var(--color-text-primary)]"
                   }`}
                 >
-                  {msg.content}
+                  {msg.text}
 
                   {/* 1-Click Action to apply AI parameters straight into the Booking Wizard */}
                   {msg.suggestedAction && (
@@ -188,20 +185,20 @@ export function AiAssistant({ onApplyPrefill }: AiAssistantProps) {
                         onClick={() => {
                           if (msg.suggestedAction) {
                             onApplyPrefill({
-                              bedrooms: msg.suggestedAction.prefillBedrooms || 3,
-                              bathrooms: msg.suggestedAction.prefillBathrooms || 2,
-                              sqft: msg.suggestedAction.prefillSqft || 2000,
-                              cleaningType: msg.suggestedAction.prefillType || "standard",
-                              condition: msg.suggestedAction.prefillCondition || "normal",
-                              addOns: msg.suggestedAction.prefillAddOns || [],
-                              frequency: msg.suggestedAction.prefillFrequency || "biweekly",
+                              bedrooms: msg.suggestedAction.bedrooms || 3,
+                              bathrooms: msg.suggestedAction.bathrooms || 2,
+                              sqft: msg.suggestedAction.sqft || 2000,
+                              cleaningType: msg.suggestedAction.cleaningType || "standard",
+                              condition: msg.suggestedAction.condition || "normal",
+                              addOns: msg.suggestedAction.addOns || [],
+                              frequency: msg.suggestedAction.frequency || "biweekly",
                             });
                           }
                         }}
                         className="inline-flex items-center space-x-2 rounded-xl bg-gradient-to-r from-[var(--color-stripe-purple)] to-[#00d4b2] px-4 py-2 text-xs font-bold text-white shadow-xs hover:opacity-95 transition-opacity"
                       >
                         <Sparkles className="h-3.5 w-3.5" />
-                        <span>{msg.suggestedAction.label}</span>
+                        <span>Apply Quote to Booking Wizard</span>
                         <ArrowRight className="h-3.5 w-3.5 ml-1" />
                       </button>
                     </div>
@@ -213,7 +210,7 @@ export function AiAssistant({ onApplyPrefill }: AiAssistantProps) {
                   <div className="flex flex-wrap items-center gap-1 text-[10px] text-[var(--color-text-muted)] px-1">
                     <ShieldCheck className="h-3 w-3 text-emerald-500" />
                     <span>Grounded in:</span>
-                    {msg.groundedSources.map((source, idx) => (
+                    {msg.groundedSources.map((source: string, idx: number) => (
                       <span
                         key={idx}
                         className="rounded bg-emerald-500/10 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 px-1.5 py-0.5 font-mono"

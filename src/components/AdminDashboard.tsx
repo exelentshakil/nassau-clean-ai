@@ -514,23 +514,23 @@ export function AdminDashboard({
                 <div className="space-y-2 text-xs">
                   <div className="flex justify-between text-[var(--color-text-secondary)]">
                     <span>Crew Lead:</span>
-                    <span className="font-semibold text-[var(--color-text-primary)]">{team.crewLead}</span>
+                    <span className="font-semibold text-[var(--color-text-primary)]">{team.leadName}</span>
                   </div>
 
                   <div className="flex justify-between text-[var(--color-text-secondary)]">
-                    <span>Crew Size:</span>
-                    <span>{team.membersCount} Pro Cleaners</span>
+                    <span>Contact Phone:</span>
+                    <span>{team.phone}</span>
                   </div>
 
                   <div className="flex justify-between text-[var(--color-text-secondary)]">
                     <span>Max Jobs Per Day:</span>
-                    <span className="font-mono">{team.maxJobsPerDay} Appointments</span>
+                    <span className="font-mono">{team.maxDailyJobs} Appointments</span>
                   </div>
 
                   <div className="flex justify-between text-[var(--color-text-secondary)]">
                     <span>Enforced Travel Buffer:</span>
                     <span className="font-mono text-[var(--color-stripe-purple)] font-bold">
-                      {team.travelBufferMinutes} Minutes Between Jobs
+                      45 Minutes Between Jobs
                     </span>
                   </div>
                 </div>
